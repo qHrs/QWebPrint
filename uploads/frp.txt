@@ -1,0 +1,13 @@
+路由器作客户端：
+先写好配置文件保存在 /etc/storage/frpc.ini
+在 “在 WAN 上行/下行启动后执行:” 里加下面命令
+sleep 10 && wget -P /tmp http://opt.cn2qq.com/opt-file/frpc && chmod 777 /tmp/frpc
+/tmp/frpc -c /etc/storage/frpc.ini >/dev/null 2>&1 &
+复制代码
+
+重启路由，普通frp就自动运行了。
+
+sleep 10 && wget -P /tmp http://opt.cn2qq.com/opt-file/frpc && chmod 777 /tmp/frpc
+/tmp/frpc -c /etc/frpc.ini >/dev/null 2>&1 &
+
+wget http://soft.vpser.net/lnmp/lnmp1.6.tar.gz -cO lnmp1.6.tar.gz && tar zxf lnmp1.6.tar.gz && cd lnmp1.6 && LNMP_Auto="y" DBSelect="3" DB_Root_Password="hy@123" InstallInnodb="y" PHPSelect="5" SelectMalloc="1" ./install.sh lnmp
