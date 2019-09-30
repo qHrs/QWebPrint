@@ -56,8 +56,10 @@ def toPrint():
     if password == '101022':
         if printer:
             if filename:
+                filename = current_app.config['UPLOAD_FOLDER'] + filename
                 printComm = 'lp -d {0} {1}'
                 # (status, output) = (0, 'test')
+                print(printComm.format(printer, filename))
                 (status, output) = subprocess.getstatusoutput(printComm.format(printer, filename))
                 if status == 0:
                     return jsonify({'code': 0, 'output': str(output), 'msg': 'success'})
@@ -70,7 +72,7 @@ def toPrint():
     else:
         return jsonify({'code': -1, 'output': '', 'msg': 'password error'})
 
-# ['hp1020']
+# ['hp1020'] None
 def getPrints():
     '获取打印机列表'
     (status, output) = subprocess.getstatusoutput("lpstat -p | grep printer |awk '{print $2}'")
@@ -98,3 +100,5 @@ def allowed_file(filename):
 # 显示作业 lpstat -W all
 # lpstat: Error - need "completed", "not-completed", or "all" after "-W" option.
 # 系统状态 lpstat -t  scheduler is running
+# lp -d HP_LaserJet_1020 uploads/2019-09-30-21_48_49_国庆阅兵.pdf
+# request id is HP_LaserJet_1020-30 (1 file(s))
