@@ -14,6 +14,7 @@ def index():
     printerList = getPrints()
     return render_template("index.html", printerList=printerList)
 
+
 @main.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
@@ -44,29 +45,39 @@ def upload():
     else:
         return jsonify({'code': -1, 'filename': '', 'msg': 'Method not allowed'})
 
+
 @main.route('/toprint', methods=['POST'])
 def toPrint():
     '执行打印程序  lp -d HP_LaserJet_1020 filename'
     printer = request.form.get('printer')
     filename = request.form.get('filename')
-    printComm = 'lp -d {0} {1}'
-    print(printComm.format(printer, filename))
-    return jsonify({'code': -1, 'filename': '', 'msg': 'success'})
-    '''
-    (status, output) = subprocess.getstatusoutput(printComm.format(printer, filename))
-    if status == 0:
-        return output.split('\n')
-    else:
-        return ['hp1020'] #None
-     '''
+    password = request.form.get('password')
 
+    if password == '101022':
+        if printer:
+            if filename:
+                printComm = 'lp -d {0} {1}'
+                # (status, output) = (0, 'test')
+                (status, output) = subprocess.getstatusoutput(printComm.format(printer, filename))
+                if status == 0:
+                    return jsonify({'code': 0, 'output': str(output), 'msg': 'success'})
+                else:
+                    return jsonify({'code': -1, 'output': str(output), 'msg': 'fail'})
+            else:
+                return jsonify({'code': -1, 'output': '', 'msg': 'No file'})
+        else:
+            return jsonify({'code': -1, 'output': '', 'msg': 'no printer'})
+    else:
+        return jsonify({'code': -1, 'output': '', 'msg': 'password error'})
+
+# ['hp1020']
 def getPrints():
     '获取打印机列表'
     (status, output) = subprocess.getstatusoutput("lpstat -p | grep printer |awk '{print $2}'")
     if status == 0:
         return output.split('\n')
     else:
-        return ['hp1020'] #None
+        return None
 
 
 def getDefaultPrint():
