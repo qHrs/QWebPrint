@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
-from flask import Flask, request, blueprints
+from flask import Flask
 from app.main import main
 
 
@@ -15,8 +15,6 @@ def create_app(config_filename):
     app.config.from_object(config_filename)
 
     # 配置蓝本
-    # config_blueprint(app)
     app.register_blueprint(main)
-    app.register_blueprint(main, url_prefix='/index')
 
     return app

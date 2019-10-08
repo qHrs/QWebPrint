@@ -1,13 +1,10 @@
-from flask import render_template, Blueprint, request, current_app, jsonify
+from flask import render_template, request, current_app, jsonify
 from werkzeug.utils import secure_filename
 import subprocess
 import app
 import os
 import time
-
-# 创建蓝本对象
-main = Blueprint('main', __name__)
-
+from . import main
 
 @main.route('/')
 def index():
